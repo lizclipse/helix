@@ -136,9 +136,9 @@ checksum = "df8670b8c7b9dae1793364eafadf7239c40d669904660c5960d74cfd80b46a53"
 
 [[package]]
 name = "cc"
-version = "1.0.104"
+version = "1.0.106"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "74b6a57f98764a267ff415d50a25e6e166f3831a5071af4995296ea97d210490"
+checksum = "066fce287b1d4eafef758e89e09d724a24808a9196fe9756b8ca90e86d0719a2"
 
 [[package]]
 name = "cfg-if"
@@ -171,9 +171,9 @@ dependencies = [
 
 [[package]]
 name = "clipboard-win"
-version = "5.3.1"
+version = "5.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "79f4473f5144e20d9aceaf2972478f06ddf687831eafeeb434fbaf0acc4144ad"
+checksum = "15efe7a882b08f34e38556b14f2fb3daa98769d06c7f0c1b076dfd0d983bc892"
 dependencies = [
  "error-code",
 ]
@@ -208,12 +208,6 @@ name = "core-foundation-sys"
 version = "0.8.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e496a50fda8aacccc86d7529e2c1e0892dbd0f898a6b5645b5561b89c3210efa"
-
-[[package]]
-name = "cov-mark"
-version = "1.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9ffa3d3e0138386cd4361f63537765cac7ee40698028844635a54495a92f67f3"
 
 [[package]]
 name = "crc32fast"
@@ -1304,7 +1298,7 @@ dependencies = [
 
 [[package]]
 name = "helix-core"
-version = "24.3.0"
+version = "24.7.0"
 dependencies = [
  "ahash",
  "arc-swap",
@@ -1337,11 +1331,12 @@ dependencies = [
  "unicode-general-category",
  "unicode-segmentation",
  "unicode-width",
+ "url",
 ]
 
 [[package]]
 name = "helix-dap"
-version = "24.3.0"
+version = "24.7.0"
 dependencies = [
  "anyhow",
  "fern",
@@ -1356,7 +1351,7 @@ dependencies = [
 
 [[package]]
 name = "helix-event"
-version = "24.3.0"
+version = "24.7.0"
 dependencies = [
  "ahash",
  "anyhow",
@@ -1370,7 +1365,7 @@ dependencies = [
 
 [[package]]
 name = "helix-loader"
-version = "24.3.0"
+version = "24.7.0"
 dependencies = [
  "anyhow",
  "cc",
@@ -1389,7 +1384,7 @@ dependencies = [
 
 [[package]]
 name = "helix-lsp"
-version = "24.3.0"
+version = "24.7.0"
 dependencies = [
  "anyhow",
  "arc-swap",
@@ -1413,11 +1408,11 @@ dependencies = [
 
 [[package]]
 name = "helix-parsec"
-version = "24.3.0"
+version = "24.7.0"
 
 [[package]]
 name = "helix-stdx"
-version = "24.3.0"
+version = "24.7.0"
 dependencies = [
  "bitflags 2.6.0",
  "dunce",
@@ -1432,7 +1427,7 @@ dependencies = [
 
 [[package]]
 name = "helix-term"
-version = "24.3.0"
+version = "24.7.0"
 dependencies = [
  "anyhow",
  "arc-swap",
@@ -1467,6 +1462,7 @@ dependencies = [
  "smallvec",
  "tempfile",
  "termini",
+ "thiserror",
  "tokio",
  "tokio-stream",
  "toml",
@@ -1475,7 +1471,7 @@ dependencies = [
 
 [[package]]
 name = "helix-tui"
-version = "24.3.0"
+version = "24.7.0"
 dependencies = [
  "bitflags 2.6.0",
  "cassowary",
@@ -1491,7 +1487,7 @@ dependencies = [
 
 [[package]]
 name = "helix-vcs"
-version = "24.3.0"
+version = "24.7.0"
 dependencies = [
  "anyhow",
  "arc-swap",
@@ -1507,7 +1503,7 @@ dependencies = [
 
 [[package]]
 name = "helix-view"
-version = "24.3.0"
+version = "24.7.0"
 dependencies = [
  "anyhow",
  "arc-swap",
@@ -1610,12 +1606,12 @@ dependencies = [
 
 [[package]]
 name = "imara-diff"
-version = "0.1.5"
+version = "0.1.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e98c1d0ad70fc91b8b9654b1f33db55e59579d3b3de2bffdced0fdb810570cb8"
+checksum = "af13c8ceb376860ff0c6a66d83a8cdd4ecd9e464da24621bbffcd02b49619434"
 dependencies = [
  "ahash",
- "hashbrown 0.12.3",
+ "hashbrown 0.14.5",
 ]
 
 [[package]]
@@ -1784,9 +1780,9 @@ dependencies = [
 
 [[package]]
 name = "nucleo"
-version = "0.2.1"
+version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ae5331f4bcce475cf28cb29c95366c3091af4b0aa7703f1a6bc858f29718fdf3"
+checksum = "5262af4c94921c2646c5ac6ff7900c2af9cbb08dc26a797e18130a7019c039d4"
 dependencies = [
  "nucleo-matcher",
  "parking_lot",
@@ -1795,11 +1791,10 @@ dependencies = [
 
 [[package]]
 name = "nucleo-matcher"
-version = "0.2.0"
+version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1b702b402fe286162d1f00b552a046ce74365d2ac473a2607ff36ba650f9bd57"
+checksum = "bf33f538733d1a5a3494b836ba913207f14d9d4a1d3cd67030c5061bdd2cac85"
 dependencies = [
- "cov-mark",
  "memchr",
  "unicode-segmentation",
 ]
@@ -1855,9 +1850,9 @@ checksum = "3fdb12b2476b595f9358c5161aa467c2438859caa136dec86c26fdd2efe17b92"
 
 [[package]]
 name = "open"
-version = "5.1.4"
+version = "5.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b5ca541f22b1c46d4bb9801014f234758ab4297e7870b904b6a8415b980a7388"
+checksum = "9d2c909a3fce3bd80efef4cd1c6c056bd9376a8fe06fcfdbebaf32cb485a7e37"
 dependencies = [
  "is-wsl",
  "libc",
@@ -2119,18 +2114,18 @@ checksum = "1792db035ce95be60c3f8853017b3999209281c24e2ba5bc8e59bf97a0c590c1"
 
 [[package]]
 name = "serde"
-version = "1.0.203"
+version = "1.0.204"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7253ab4de971e72fb7be983802300c30b5a7f0c2e56fab8abfc6a214307c0094"
+checksum = "bc76f558e0cbb2a839d37354c575f1dc3fdc6546b5be373ba43d95f231bf7c12"
 dependencies = [
  "serde_derive",
 ]
 
 [[package]]
 name = "serde_derive"
-version = "1.0.203"
+version = "1.0.204"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "500cbc0ebeb6f46627f50f3f5811ccf6bf00643be300b4c3eabc0ef55dc5b5ba"
+checksum = "e0cd7e117be63d3c3678776753929474f3b04a43a080c744d6b0ae2a8c28e222"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -2925,7 +2920,7 @@ checksum = "d135d17ab770252ad95e9a872d365cf3090e3be864a34ab46f48555993efc904"
 
 [[package]]
 name = "xtask"
-version = "24.3.0"
+version = "24.7.0"
 dependencies = [
  "helix-core",
  "helix-loader",

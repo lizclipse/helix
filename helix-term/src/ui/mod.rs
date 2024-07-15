@@ -21,7 +21,7 @@ pub use editor::EditorView;
 use helix_stdx::rope;
 pub use markdown::Markdown;
 pub use menu::Menu;
-pub use picker::{DynamicPicker, FileLocation, Picker};
+pub use picker::{Column as PickerColumn, FileLocation, Picker};
 pub use popup::Popup;
 pub use prompt::{Prompt, PromptEvent};
 pub use spinner::{ProgressSpinners, Spinner};
@@ -170,7 +170,9 @@ pub fn raw_regex_prompt(
     cx.push_layer(Box::new(prompt));
 }
 
-pub fn file_picker(root: PathBuf, config: &helix_view::editor::Config) -> Picker<PathBuf> {
+type FilePicker = Picker<PathBuf, PathBuf>;
+
+pub fn file_picker(root: PathBuf, config: &helix_view::editor::Config) -> FilePicker {
     use ignore::{types::TypesBuilder, WalkBuilder};
     use std::time::Instant;
 
@@ -217,7 +219,16 @@ pub fn file_picker(root: PathBuf, config: &helix_view::editor::Config) -> Picker
     });
     log::debug!("file_picker init {:?}", Instant::now().duration_since(now));
 
-    let picker = Picker::new(Vec::new(), root, move |cx, path: &PathBuf, action| {
+    let columns = [PickerColumn::new(
+        "path",
+        |item: &PathBuf, root: &PathBuf| {
+            item.strip_prefix(root)
+                .unwrap_or(item)
+                .to_string_lossy()
+                .into()
+        },
+    )];
+    let picker = Picker::new(columns, 0, [], root, move |cx, path: &PathBuf, action| {
         if let Err(e) = cx.editor.open(path, action) {
             let err = if let Some(err) = e.source() {
                 format!("{}", err)
@@ -227,7 +238,7 @@ pub fn file_picker(root: PathBuf, config: &helix_view::editor::Config) -> Picker
             cx.editor.set_error(err);
         }
     })
-    .with_preview(|_editor, path| Some((path.clone().into(), None)));
+    .with_preview(|_editor, path| Some((path.as_path().into(), None)));
     let injector = picker.injector();
     let timeout = std::time::Instant::now() + std::time::Duration::from_millis(30);
 
@@ -364,14 +375,16 @@ pub mod completers {
     }
 
     pub fn lsp_workspace_command(editor: &Editor, input: &str) -> Vec<Completion> {
-        let Some(options) = doc!(editor)
+        let commands = doc!(editor)
             .language_servers_with_feature(LanguageServerFeature::WorkspaceCommand)
-            .find_map(|ls| ls.capabilities().execute_command_provider.as_ref())
-        else {
-            return vec![];
-        };
+            .flat_map(|ls| {
+                ls.capabilities()
+                    .execute_command_provider
+                    .iter()
+                    .flat_map(|options| options.commands.iter())
+            });
 
-        fuzzy_match(input, &options.commands, false)
+        fuzzy_match(input, commands, false)
             .into_iter()
             .map(|(name, _)| ((0..), name.to_owned().into()))
             .collect()
