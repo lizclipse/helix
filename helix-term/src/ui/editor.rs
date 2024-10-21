@@ -182,6 +182,7 @@ impl EditorView {
             .selection(view.id)
             .primary()
             .cursor(doc.text().slice(..));
+        Self::render_rulers(editor, doc, view, inner, surface, theme);
         if is_focused {
             decorations.add_decoration(text_decorations::Cursor {
                 cache: &editor.cursor_cache,
@@ -212,7 +213,6 @@ impl EditorView {
             theme,
             decorations,
         );
-        Self::render_rulers(editor, doc, view, inner, surface, theme);
 
         // if we're not at the edge of the screen or zoomed, draw a right border
         if viewport.right() != view.area.right() && !editor.tree.zoom {
