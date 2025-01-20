@@ -2,6 +2,7 @@ use helix_term::application::Application;
 
 use super::*;
 
+mod insert;
 mod movement;
 mod variable_expansion;
 mod write;
@@ -662,6 +663,14 @@ async fn test_join_selections_comment() -> anyhow::Result<()> {
         indoc! {"\
             #[| // a b /// c d e f // g]#
         "},
+    ))
+    .await?;
+
+    test((
+        "#[|\t// Join comments
+\t// with indent]#",
+        ":lang go<ret>J",
+        "#[|\t// Join comments with indent]#",
     ))
     .await?;
 
