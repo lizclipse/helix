@@ -2548,31 +2548,31 @@ fn set_max_width(
         return Ok(());
     }
 
-    let Some(width) = args.first() else {
-        bail!(":set-max-width takes one argument")
+    let mut args = args.iter();
+    let Some(width) = args.next() else {
+        bail!(":set-max-width takes 1 or 2 arguments")
     };
-    let width = width.parse()?;
-    cx.editor.tree.max_width = width;
+    let width: u16 = width.parse()?;
+    let alt_width: Option<u16> = args.next().map(|w| w.parse()).transpose()?;
+
+    let set_width = match alt_width {
+        Some(alt_width) if cx.editor.tree.max_width == width => {
+            cx.editor.tree.max_width = alt_width;
+            alt_width
+        }
+        _ => {
+            cx.editor.tree.max_width = width;
+            width
+        }
+    };
     cx.editor.tree.recalculate();
 
-    if width == 0 {
+    if set_width == 0 {
         cx.editor.set_status("Unset maximum width");
     } else {
         cx.editor
-            .set_status(format!("Set maximum width to {}", width));
+            .set_status(format!("Set maximum width to {}", set_width));
     }
-
-    Ok(())
-}
-
-fn echo(cx: &mut compositor::Context, args: &[Cow<str>], event: PromptEvent) -> anyhow::Result<()> {
-    if event != PromptEvent::Validate {
-        return Ok(());
-    }
-
-    let args = args.join(" ");
-
-    cx.editor.set_status(args);
 
     Ok(())
 }
@@ -3199,18 +3199,18 @@ pub const TYPABLE_COMMAND_LIST: &[TypableCommand] = &[
         signature: CommandSignature::positional(&[completers::filename]),
     },
     TypableCommand {
-        name: "set-max-width",
-        aliases: &[],
-        doc: "Set the maximum width of the editor. If set to 0 it will take up the entire width.",
-        fun: set_max_width,
-        signature: CommandSignature::positional(&[completers::none]),
-    },
-    TypableCommand {
         name: "echo",
         aliases: &[],
         doc: "Print the processed input to the editor status",
         fun: echo,
         signature: CommandSignature::all(completers::variables)
+    },
+    TypableCommand {
+        name: "set-max-width",
+        aliases: &[],
+        doc: "Set the maximum width of the editor, or swap between 2 widths. If set to 0 it will take up the entire width.",
+        fun: set_max_width,
+        signature: CommandSignature::positional(&[completers::none]),
     },
 ];
 

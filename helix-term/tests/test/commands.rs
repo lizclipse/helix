@@ -8,6 +8,26 @@ mod variable_expansion;
 mod write;
 
 #[tokio::test(flavor = "multi_thread")]
+async fn search_selection_detect_word_boundaries_at_eof() -> anyhow::Result<()> {
+    // <https://github.com/helix-editor/helix/issues/12609>
+    test((
+        indoc! {"\
+            #[o|]#ne
+            two
+            three"},
+        "gej*h",
+        indoc! {"\
+            one
+            two
+            three#[
+            |]#"},
+    ))
+    .await?;
+
+    Ok(())
+}
+
+#[tokio::test(flavor = "multi_thread")]
 async fn test_selection_duplication() -> anyhow::Result<()> {
     // Forward
     test((
