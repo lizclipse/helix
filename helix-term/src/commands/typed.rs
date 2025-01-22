@@ -2539,6 +2539,18 @@ fn read(cx: &mut compositor::Context, args: &[Cow<str>], event: PromptEvent) -> 
     Ok(())
 }
 
+fn echo(cx: &mut compositor::Context, args: &[Cow<str>], event: PromptEvent) -> anyhow::Result<()> {
+    if event != PromptEvent::Validate {
+        return Ok(());
+    }
+
+    let args = args.join(" ");
+
+    cx.editor.set_status(args);
+
+    Ok(())
+}
+
 fn set_max_width(
     cx: &mut compositor::Context,
     args: &[Cow<str>],
